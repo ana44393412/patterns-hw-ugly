@@ -2,7 +2,7 @@ package generators;
 
 public interface Generator<T> {
 
-    void generateParams(int code);
+    String generateParams(int code);
 
-    T buildResponse();
+    String buildResponse();
 }

@@ -3,7 +3,7 @@ package generators;
 import static utils.FileReader.getLinesFromFile;
 import static utils.MyMath.getDigitsSum;
 
-public class FioGenerator {
+public class FioGenerator implements Generator {
 
     private String lastName;
     private String firstName;
@@ -16,25 +16,21 @@ public class FioGenerator {
      * Отчество - сумма последних двух цифр.
      *
      * @param code код для генерации
+     * @return FIO
      */
-    public final void generateParams(final int code) {
+    @Override
+    public final String generateParams(final int code) {
         final int lastNameIndex = getDigitsSum(code);
         final String sex = (lastNameIndex % 2 == 0) ? "f" : "m";
         setLastNameFromFile(lastNameIndex, sex);
         setFirstNameFromFile(getDigitsSum(code / 100), sex);
         setMiddleNameFromFile(getDigitsSum(code % 100), sex);
+        return sex;
     }
 
-    public final String getLastName() {
-        return lastName;
-    }
-
-    public final String getFirstName() {
-        return firstName;
-    }
-
-    public final String getMiddleName() {
-        return middleName;
+    @Override
+    public final String buildResponse() {
+        return lastName + " " + firstName + " " + middleName;
     }
 
     private void setLastNameFromFile(final int i, final String sex) {
@@ -49,4 +45,3 @@ public class FioGenerator {
         middleName = getLinesFromFile("middleNames_" + sex).get(i);
     }
 }
-
